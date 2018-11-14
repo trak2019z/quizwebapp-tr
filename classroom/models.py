@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.html import escape, mark_safe
 
 
 class User(AbstractUser):
@@ -13,6 +14,12 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_html_badge(self):
+        name = escape(self.name)
+        color = escape(self.color)
+        html = '<span class="badge badge-primary" style="background-color: %s">%s</span>' % (color, name)
+        return mark_safe(html)
 
 
 class Quiz(models.Model):
@@ -45,6 +52,13 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     quizzes = models.ManyToManyField(Quiz, through='TakenQuiz')
     interests = models.ManyToManyField(Subject, related_name='interested_students')
+
+    def get_unanswered_questions(self, quiz):
+        answered_questions = self.quiz_answers \
+            .filter(answer__question__quiz=quiz) \
+            .values_list('answer__question__pk', flat=True)
+        questions = quiz.questions.exclude(pk__in=answered_questions).order_by('text')
+        return questions
 
     def __str__(self):
         return self.user.username
