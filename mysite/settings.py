@@ -24,7 +24,7 @@ SECRET_KEY = '(g5&v@x1mpn5cy%22#vo=gq*-mx%aw$f%p+tc&+n7o6zs18*7c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'jzmuda.pythonanywhere.com']
 
 # Application definition
 
@@ -116,4 +116,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATIC_URL = '/static/'
+# default static files settings for PythonAnywhere.
+# see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
+MEDIA_ROOT = u'/home/jzmuda/mysite/media'
+MEDIA_URL = '/media/'
+STATIC_ROOT = u'/home/jzmuda/mysite/static'
 STATIC_URL = '/static/'
