@@ -10,8 +10,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
-from classroom.forms import BaseAnswerInlineFormSet, QuestionForm, TeacherSignUpForm
-from classroom.models import Answer, Question, Quiz, User
+from ..decorators import teacher_required
+from ..forms import BaseAnswerInlineFormSet, QuestionForm, TeacherSignUpForm
+from ..models import Answer, Question, Quiz, User
 
 
 class TeacherSignUpView(CreateView):
@@ -29,6 +30,7 @@ class TeacherSignUpView(CreateView):
         return redirect('teachers:quiz_change_list')
 
 
+@method_decorator([login_required, teacher_required], name='dispatch')
 class QuizListView(ListView):
     model = Quiz
     ordering = ('name', )
@@ -43,6 +45,7 @@ class QuizListView(ListView):
         return queryset
 
 
+@method_decorator([login_required, teacher_required], name='dispatch')
 class QuizCreateView(CreateView):
     model = Quiz
     fields = ('name', 'subject', )
@@ -56,6 +59,7 @@ class QuizCreateView(CreateView):
         return redirect('teachers:quiz_change', quiz.pk)
 
 
+@method_decorator([login_required, teacher_required], name='dispatch')
 class QuizUpdateView(UpdateView):
     model = Quiz
     fields = ('name', 'subject', )
@@ -67,12 +71,18 @@ class QuizUpdateView(UpdateView):
         return super().get_context_data(**kwargs)
 
     def get_queryset(self):
+        '''
+        This method is an implicit object-level permission management
+        This view will only match the ids of existing quizzes that belongs
+        to the logged in user.
+        '''
         return self.request.user.quizzes.all()
 
     def get_success_url(self):
         return reverse('teachers:quiz_change', kwargs={'pk': self.object.pk})
 
 
+@method_decorator([login_required, teacher_required], name='dispatch')
 class QuizDeleteView(DeleteView):
     model = Quiz
     context_object_name = 'quiz'
@@ -88,6 +98,7 @@ class QuizDeleteView(DeleteView):
         return self.request.user.quizzes.all()
 
 
+@method_decorator([login_required, teacher_required], name='dispatch')
 class QuizResultsView(DetailView):
     model = Quiz
     context_object_name = 'quiz'
@@ -110,6 +121,8 @@ class QuizResultsView(DetailView):
         return self.request.user.quizzes.all()
 
 
+@login_required
+@teacher_required
 def question_add(request, pk):
     # By filtering the quiz by the url keyword argument `pk` and
     # by the owner, which is the logged in user, we are protecting
@@ -131,7 +144,15 @@ def question_add(request, pk):
     return render(request, 'classroom/teachers/question_add_form.html', {'quiz': quiz, 'form': form})
 
 
+@login_required
+@teacher_required
 def question_change(request, quiz_pk, question_pk):
+    # Simlar to the `question_add` view, this view is also managing
+    # the permissions at object-level. By querying both `quiz` and
+    # `question` we are making sure only the owner of the quiz can
+    # change its details and also only questions that belongs to this
+    # specific quiz can be changed via this url (in cases where the
+    # user might have forged/player with the url params.
     quiz = get_object_or_404(Quiz, pk=quiz_pk, owner=request.user)
     question = get_object_or_404(Question, pk=question_pk, quiz=quiz)
 
@@ -167,6 +188,7 @@ def question_change(request, quiz_pk, question_pk):
     })
 
 
+@method_decorator([login_required, teacher_required], name='dispatch')
 class QuestionDeleteView(DeleteView):
     model = Question
     context_object_name = 'question'

@@ -3,7 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.forms.utils import ValidationError
 
-from classroom.models import Answer, Question, Student, StudentAnswer, Subject, User
+from classroom.models import (Answer, Question, Student, StudentAnswer,
+                              Subject, User)
 
 
 class TeacherSignUpForm(UserCreationForm):
@@ -41,7 +42,7 @@ class StudentSignUpForm(UserCreationForm):
 class StudentInterestsForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ('interests',)
+        fields = ('interests', )
         widgets = {
             'interests': forms.CheckboxSelectMultiple
         }
@@ -50,7 +51,7 @@ class StudentInterestsForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ('text',)
+        fields = ('text', )
 
 
 class BaseAnswerInlineFormSet(forms.BaseInlineFormSet):
@@ -76,7 +77,7 @@ class TakeQuizForm(forms.ModelForm):
 
     class Meta:
         model = StudentAnswer
-        fields = ('answer',)
+        fields = ('answer', )
 
     def __init__(self, *args, **kwargs):
         question = kwargs.pop('question')

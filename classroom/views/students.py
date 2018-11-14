@@ -8,9 +8,9 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView, UpdateView
 
-
-from classroom.forms import StudentInterestsForm, StudentSignUpForm, TakeQuizForm
-from classroom.models import Quiz, Student, TakenQuiz, User
+from ..decorators import student_required
+from ..forms import StudentInterestsForm, StudentSignUpForm, TakeQuizForm
+from ..models import Quiz, Student, TakenQuiz, User
 
 
 class StudentSignUpView(CreateView):
@@ -28,6 +28,7 @@ class StudentSignUpView(CreateView):
         return redirect('students:quiz_list')
 
 
+@method_decorator([login_required, student_required], name='dispatch')
 class StudentInterestsView(UpdateView):
     model = Student
     form_class = StudentInterestsForm
@@ -42,6 +43,7 @@ class StudentInterestsView(UpdateView):
         return super().form_valid(form)
 
 
+@method_decorator([login_required, student_required], name='dispatch')
 class QuizListView(ListView):
     model = Quiz
     ordering = ('name', )
@@ -59,6 +61,7 @@ class QuizListView(ListView):
         return queryset
 
 
+@method_decorator([login_required, student_required], name='dispatch')
 class TakenQuizListView(ListView):
     model = TakenQuiz
     context_object_name = 'taken_quizzes'
@@ -71,6 +74,8 @@ class TakenQuizListView(ListView):
         return queryset
 
 
+@login_required
+@student_required
 def take_quiz(request, pk):
     quiz = get_object_or_404(Quiz, pk=pk)
     student = request.user.student
