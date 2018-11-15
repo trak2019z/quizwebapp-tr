@@ -7,11 +7,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class SubjectAdmin(admin.ModelAdmin):
-    pass
-
-
-class StudentAnswerAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'color')
 
 
 class StudentAdmin(admin.ModelAdmin):
@@ -19,16 +15,15 @@ class StudentAdmin(admin.ModelAdmin):
 
 
 class QuestionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('quiz', 'text')
 
 
 class AnswerAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('question', 'text', 'is_correct')
 
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Subject, SubjectAdmin)
-admin.site.register(StudentAnswer, StudentAnswerAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Answer, AnswerAdmin)
