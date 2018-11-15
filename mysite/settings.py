@@ -24,7 +24,7 @@ SECRET_KEY = '(g5&v@x1mpn5cy%22#vo=gq*-mx%aw$f%p+tc&+n7o6zs18*7c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [u'jzmuda.pythonanywhere.com']
 
 # Application definition
 
@@ -136,7 +136,18 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # default static files settings for PythonAnywhere.
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
-MEDIA_ROOT = u'/home/jzmuda/mysite/media'
+MEDIA_ROOT = u'/home/jzmuda/quizwebapp/media'
 MEDIA_URL = '/media/'
-STATIC_ROOT = u'/home/jzmuda/mysite/static'
+STATIC_ROOT = u'/home/jzmuda/quizwebapp/static'
 STATIC_URL = '/static/'
+
+# Messages built-in framework
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-secondary',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
