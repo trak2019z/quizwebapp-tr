@@ -14,15 +14,18 @@ from ..models import Quiz, Student, TakenQuiz, User
 
 
 class StudentSignUpView(CreateView):
+    """ Rejestracja nowego konta dla studenta"""
     model = User
     form_class = StudentSignUpForm
     template_name = 'registration/signup_form.html'
 
     def get_context_data(self, **kwargs):
+        """ Zwraca dane reprezentujace szablon"""
         kwargs['user_type'] = 'student'
         return super().get_context_data(**kwargs)
 
     def form_valid(self, form):
+        """ Sprawdzenie formularza """
         user = form.save()
         login(self.request, user)
         return redirect('students:quiz_list')
@@ -30,27 +33,32 @@ class StudentSignUpView(CreateView):
 
 @method_decorator([login_required, student_required], name='dispatch')
 class StudentInterestsView(UpdateView):
+    """ Dodawanie/Usuwanie zainteresowań studenta"""
     model = Student
     form_class = StudentInterestsForm
     template_name = 'classroom/students/interests_form.html'
     success_url = reverse_lazy('students:quiz_list')
 
     def get_object(self):
+        """ Zwrócenie obiektu student"""
         return self.request.user.student
 
     def form_valid(self, form):
+        """ Sprawdzenie formularza """
         messages.success(self.request, 'Interests updated with success!')
         return super().form_valid(form)
 
 
 @method_decorator([login_required, student_required], name='dispatch')
 class QuizListView(ListView):
+    """ Widok listy wszystkich quizów dostępnych dla studenta """
     model = Quiz
     ordering = ('name', )
     context_object_name = 'quizzes'
     template_name = 'classroom/students/quiz_list.html'
 
     def get_queryset(self):
+        """ Funkcja zwraca queryset"""
         student = self.request.user.student
         student_interests = student.interests.values_list('pk', flat=True)
         taken_quizzes = student.quizzes.values_list('pk', flat=True)
@@ -63,11 +71,13 @@ class QuizListView(ListView):
 
 @method_decorator([login_required, student_required], name='dispatch')
 class TakenQuizListView(ListView):
+    """ Widok listy wszystkich quizów rozwiązanych przez studenta """
     model = TakenQuiz
     context_object_name = 'taken_quizzes'
     template_name = 'classroom/students/taken_quiz_list.html'
 
     def get_queryset(self):
+        """ Funkcja zwraca queryset"""
         queryset = self.request.user.student.taken_quizzes \
             .select_related('quiz', 'quiz__subject') \
             .order_by('quiz__name')
@@ -77,6 +87,7 @@ class TakenQuizListView(ListView):
 @login_required
 @student_required
 def take_quiz(request, pk):
+    """ Widok/Funkcja do rozpoczecia rozwiązywania quiza przez studenta """
     quiz = get_object_or_404(Quiz, pk=pk)
     student = request.user.student
 

@@ -14,18 +14,24 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include,re_path
 from classroom.views import classroom, students, teachers
 from django.conf import settings
 from django.conf.urls.static import static
 from .router import router
+from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
+    # ADMIN
     path('admin/', admin.site.urls),
+    path('admin/doc/', include('django.contrib.admindocs.urls')),
+    # CLASSROOM APP
     path('', include('classroom.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/signup/', classroom.SignUpView.as_view(), name='signup'),
     path('accounts/signup/student/', students.StudentSignUpView.as_view(), name='student_signup'),
     path('accounts/signup/teacher/', teachers.TeacherSignUpView.as_view(), name='teacher_signup'),
+    # RESTFUL API
     path('api/', include(router.urls)),
+    path('api/docs/', include_docs_urls(title='My API title')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
