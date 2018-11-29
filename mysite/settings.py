@@ -25,7 +25,7 @@ SECRET_KEY = '(g5&v@x1mpn5cy%22#vo=gq*-mx%aw$f%p+tc&+n7o6zs18*7c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'jzmuda.pythonanywhere.com']
+ALLOWED_HOSTS = [u'jzmuda.pythonanywhere.com','127.0.0.1']
 
 # Application definition
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     # ---------INSTALLED--------
     'crispy_forms',
+    'rest_framework',
     # ---------APPS-------------
     'classroom',
 
@@ -147,4 +148,12 @@ MESSAGE_TAGS = {
     messages.SUCCESS: 'alert-success',
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
+}
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
