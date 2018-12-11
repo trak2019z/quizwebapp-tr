@@ -25,7 +25,7 @@ SECRET_KEY = '(g5&v@x1mpn5cy%22#vo=gq*-mx%aw$f%p+tc&+n7o6zs18*7c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'jzmuda.pythonanywhere.com','127.0.0.1']
+ALLOWED_HOSTS = [u'jzmuda.pythonanywhere.com', '127.0.0.1']
 
 # Application definition
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # ---------INSTALLED--------
     'crispy_forms',
     'rest_framework',
+    'django_extensions',
     # ---------APPS-------------
     'classroom',
 
@@ -90,30 +91,26 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-#     },
-# ]
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 # Custom Django auth settings
 
 AUTH_USER_MODEL = 'classroom.User'
-
 LOGIN_URL = 'login'
-
 LOGOUT_URL = 'logout'
-
 LOGIN_REDIRECT_URL = 'home'
-
 LOGOUT_REDIRECT_URL = 'home'
 
 # Third party apps configuration
@@ -139,8 +136,8 @@ USE_TZ = True
 # see https://help.pythonanywhere.com/pages/DjangoStaticFiles for more info
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATIC_URL = '/static/'
 
 # Messages built-in framework
 MESSAGE_TAGS = {
@@ -158,3 +155,15 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+# django-heroku setting
+import django_heroku
+
+django_heroku.settings(locals())
+# static files settings
+STATIC_URL = '/static/'
+# location where you will store your static files like bootstrap
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+# location where django collect all static files
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")

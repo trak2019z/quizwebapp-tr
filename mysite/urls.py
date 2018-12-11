@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include,re_path
+from django.urls import path, include, re_path
 from classroom.views import classroom, students, teachers
 from django.conf import settings
 from django.conf.urls.static import static
@@ -33,5 +33,6 @@ urlpatterns = [
     path('accounts/signup/teacher/', teachers.TeacherSignUpView.as_view(), name='teacher_signup'),
     # RESTFUL API
     path('api/', include(router.urls)),
-    path('api/docs/', include_docs_urls(title='My API title')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path('api/doc/', include_docs_urls(title='My API title')),
+]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
