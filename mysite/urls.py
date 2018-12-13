@@ -34,5 +34,7 @@ urlpatterns = [
     # RESTFUL API
     path('api/', include(router.urls)),
     path('api/doc/', include_docs_urls(title='My API title')),
+    # CHAT
+    path('chat/', include('chat.urls'))
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
