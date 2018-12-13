@@ -126,13 +126,20 @@
     var roomName = {{ room_name_json }};
     var username = {{ username }};
 
+    if (window.location.protocol == "https:") {
+        var ws_scheme = "wss://";
+    } else {
+        var ws_scheme = "ws://"
+    }
+
+
     var chatSocket = new ReconnectingWebSocket(
-        'wss://' + window.location.host +
-        '/wss/chat/' + roomName + '/');
+        ws_scheme + window.location.host +
+        '/ws/chat/' + roomName + '/');
 
     chatSocket.onopen = function (e) {
         fetchMessages();
-    }
+    };
 
     chatSocket.onmessage = function (e) {
         var data = JSON.parse(e.data);
