@@ -1,3 +1,3 @@
 release: python manage.py migrate
-web: daphne mysite.asgi:application --port $port --bind 0.0.0.0
-worker: python manage.py runworker channels -v2
+web: daphne mysite.asgi:channel_layer --port $PORT --bind 0.0.0.0 -v2
+worker: python manage.py runworker -v2
