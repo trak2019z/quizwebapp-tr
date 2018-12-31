@@ -30,4 +30,3 @@ pytz==2018.7
 setuptools==40.6.2
 simplegeneric==0.8.1
 traitlets==4.3.2
-wcwidth==0.1.7,
