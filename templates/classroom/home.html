@@ -1,18 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Welcome to the Django Schools! <span class="icon-emo-happy"></span></h2>
+    <h2>Welcome! <span class="icon-emo-happy"></span></h2>
     <p class="lead">
         If you already have an account, go ahead and <a href="{% url 'login' %}">log in</a>.
         Or are you new user, join now by creating a <a href="{% url 'student_signup' %}">student account</a> or a <a
             href="{% url 'teacher_signup' %}">teacher account</a>.
     </p>
     <hr>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque non nibh sem. Vivamus scelerisque maximus
-        dolor, id volutpat dolor volutpat in. Donec consequat orci quis auctor varius. Mauris eget felis eget mauris
-        vulputate tincidunt eget quis odio. Sed ultricies lectus nec tellus feugiat, quis cursus ante dictum. Integer
-        accumsan sem vitae elit vehicula, in finibus dolor aliquam. Nulla leo nisl, ornare at dignissim eget, tempor non
-        tellus. Aliquam ac ultricies odio.
-    </p>
 {% endblock %}

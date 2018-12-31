@@ -24,7 +24,7 @@ SECRET_KEY = '(g5&v@x1mpn5cy%22#vo=gq*-mx%aw$f%p+tc&+n7o6zs18*7c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+PROD = False
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -85,10 +85,21 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": ["redis://h:p2f1c5446ffcb0234ed442fafc5cdaa7b2bc87269d925305323f0488ad14e69b0@ec2-54-209-190-123.compute-1.amazonaws.com:54069"],
+            "hosts": [
+                "redis://h:p2f1c5446ffcb0234ed442fafc5cdaa7b2bc87269d925305323f0488ad14e69b0@ec2-54-209-190-123.compute-1.amazonaws.com:54069"],
         },
     },
 }
+if PROD:
+
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG': {
+                "hosts": [('127.0.0.1', 6379)],
+            },
+        },
+    }
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 

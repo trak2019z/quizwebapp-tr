@@ -10,6 +10,9 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'vendor/fontello-2f186091/css/fontello.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" type="text/css"
+          href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
     {% if user.is_authenticated and user.is_teacher %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/teachers.css' %}">
     {% else %}
@@ -25,16 +28,25 @@
                     <h1 class="logo">
                         <a href="{% url 'home' %}">
                             Quizello
+                        </a>
                             {% if user.is_authenticated %}
                                 {% if user.is_teacher %}
+                                    <a href="{% url 'home' %}">
                                     <span class="icon-feather" data-toggle="tooltip" data-placement="right"
-                                          title="Teacher profile"></span>
+                                          title="Teacher profile"></span></a>
+                                    <a href="{% url 'chat:index' %}">
+                                    <i class="fa fa-comments" data-toggle="tooltip" data-placement="right"
+                                          title="Chat"></i></a>
                                 {% else %}
+                                    <a href="{% url 'home' %}">
                                     <span class="icon-graduation-cap" data-toggle="tooltip" data-placement="right"
-                                          title="Student profile"></span>
+                                          title="Student profile"></span></a>
+                                    <a href="{% url 'chat:index' %}">
+                                    <i class="fa fa-comments" data-toggle="tooltip" data-placement="right"
+                                          title="Chat"></i></a>
                                 {% endif %}
                             {% endif %}
-                        </a>
+
                     </h1>
                 </div>
                 <div class="col-6 text-right">
